@@ -71,7 +71,8 @@ with `sudo` access executing `kubernetes-swarm-remote-installer.sh`. The immedia
 like this:
 
 ```bash
-ssh -t ${USER}@${slave} "$(<./kubernetes-swarm-remote-installer.sh)" TARGET_NODE="$(printf '%q' "${slave}")"
+ssh -t ${USER}@${slave} "$(<./kubernetes-swarm-remote-installer.sh)" \
+TARGET_NODE="$(printf '%q' "${slave}")"
 ```
 
 However, script arguments are **not** accepted after the script, as such the above command will fail. 
@@ -79,7 +80,8 @@ The solution to that issue is to pass them as *evaluated* environment variables 
 to the ssh session; i.e.
 
 ```bash
-ssh -t ${USER}@${slave} TARGET_NODE="$(printf '%q' "${slave}")" "$(<./kubernetes-swarm-remote-installer.sh)"
+ssh -t ${USER}@${slave} TARGET_NODE="$(printf '%q' "${slave}")" \ 
+"$(<./kubernetes-swarm-remote-installer.sh)"
 ```
 
 Do note that ordering is quite important here, however there is still a problem as the remote script *cannot* be 
