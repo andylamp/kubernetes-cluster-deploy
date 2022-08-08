@@ -84,7 +84,10 @@ sudo apt-get install -y \
 
 # fetch and install the docker GPG key
 cli_info "Getting the docker key"
-curl -fsSL ${REPO_LINK}/${DIST_FLAVOR}/gpg | sudo apt-key add -
+if ! curl -fsSL ${REPO_LINK}/${DIST_FLAVOR}/gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/docker.gpg; then
+  cli_error "Failed to install docker key - cannot continue."
+  exit 1
+fi
 cli_info "Got docker key"
 
 # add the official docker repo
